@@ -126,7 +126,7 @@ header {
 .apt-header {
   background: #1a3322;
   color: white;
-  font-size: 0.36rem;
+  font-size: 0.30rem;
   font-weight: 700;
   padding: 1px 2px;
   white-space: nowrap;
@@ -134,7 +134,7 @@ header {
 }
 
 .apt-serv {
-  font-size: 0.28rem;
+  font-size: 0.22rem;
   padding: 1px 2px;
   border-top: 1px solid #e0e0e0;
   white-space: nowrap;
