@@ -7,7 +7,7 @@ const firebaseConfig = {
   appId: "1:472820177992:web:2e1b98c9f6ac3a823d0c7d"
 };
 
-const VERSAO = "2.6";
+const VERSAO = "2.7";
 document.getElementById("versao-app").textContent = "v" + VERSAO;
 
 firebase.initializeApp(firebaseConfig);
@@ -87,18 +87,6 @@ function renderAptCell(local) {
     </div>`;
 }
 
-function ajustarModalAoViewport() {
-  const vv = window.visualViewport;
-  const el = document.getElementById("modal-info");
-  if (!vv || !el) return;
-  el.style.top    = vv.offsetTop  + "px";
-  el.style.left   = vv.offsetLeft + "px";
-  el.style.width  = vv.width      + "px";
-  el.style.height = vv.height     + "px";
-  el.style.right  = "auto";
-  el.style.bottom = "auto";
-}
-
 function verServico(el) {
   const metaVP = document.querySelector('meta[name=viewport]');
   metaVP.setAttribute('content', 'width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover');
@@ -124,23 +112,13 @@ function verServico(el) {
   }
 
   document.getElementById("info-conteudo").innerHTML = html;
-  const modal = document.getElementById("modal-info");
-  modal.style.display = "flex";
-  ajustarModalAoViewport();
-  if (window.visualViewport) {
-    window.visualViewport.addEventListener("scroll", ajustarModalAoViewport);
-    window.visualViewport.addEventListener("resize", ajustarModalAoViewport);
-  }
-  window.addEventListener("resize", ajustarModalAoViewport);
+  requestAnimationFrame(() => {
+    document.getElementById("modal-info").style.display = "flex";
+  });
 }
 
 function fecharInfo() {
   document.getElementById("modal-info").style.display = "none";
-  if (window.visualViewport) {
-    window.visualViewport.removeEventListener("scroll", ajustarModalAoViewport);
-    window.visualViewport.removeEventListener("resize", ajustarModalAoViewport);
-  }
-  window.removeEventListener("resize", ajustarModalAoViewport);
   const metaVP = document.querySelector('meta[name=viewport]');
   metaVP.setAttribute('content', 'width=device-width, initial-scale=1, viewport-fit=cover');
 }
