@@ -7,7 +7,7 @@ const firebaseConfig = {
   appId: "1:472820177992:web:2e1b98c9f6ac3a823d0c7d"
 };
 
-const VERSAO = "2.1";
+const VERSAO = "2.2";
 document.getElementById("versao-app").textContent = "v" + VERSAO;
 
 firebase.initializeApp(firebaseConfig);
@@ -75,9 +75,45 @@ function renderAptCell(local) {
     <div class="apt-cell">
       <div class="apt-header">Apt: ${escHtml(numPart)}</div>
       ${servs.map(s =>
-        `<div class="apt-serv ${s.status}">${nomeAbrev(s.nome)}</div>`
+        `<div class="apt-serv ${s.status}"
+              data-apt="${escHtml(local.identificacao)}"
+              data-nome="${escHtml(s.nome)}"
+              data-status="${s.status}"
+              data-executor="${escHtml((s.executor && s.executor.nome) || '')}"
+              data-valor="${s.valorPago || ''}"
+              data-data="${escHtml(s.dataPagamento || '')}"
+              onclick="verServico(this)">${nomeAbrev(s.nome)}</div>`
       ).join("")}
     </div>`;
+}
+
+function verServico(el) {
+  const apt      = el.dataset.apt;
+  const nome     = el.dataset.nome;
+  const status   = el.dataset.status;
+  const executor = el.dataset.executor;
+  const valor    = el.dataset.valor;
+  const data     = el.dataset.data;
+
+  const fmtValor = v => v ? "R$ " + parseFloat(v).toFixed(2).replace(".", ",").replace(/\B(?=(\d{3})+(?!\d))/g, ".") : "—";
+
+  let html = `
+    <div class="info-row"><span class="info-label">Apt</span><span>${escHtml(apt)}</span></div>
+    <div class="info-row"><span class="info-label">Serviço</span><span>${escHtml(nome)}</span></div>
+    <div class="info-row"><span class="info-label">Status</span><span class="info-status ${status}">${status === "concluido" ? "Concluído ✓" : "Pendente"}</span></div>`;
+  if (status === "concluido") {
+    html += `
+    <div class="info-row"><span class="info-label">Executor</span><span>${escHtml(executor) || "—"}</span></div>
+    <div class="info-row"><span class="info-label">Data</span><span>${escHtml(data) || "—"}</span></div>
+    <div class="info-row"><span class="info-label">Valor pago</span><span>${fmtValor(valor)}</span></div>`;
+  }
+
+  document.getElementById("info-conteudo").innerHTML = html;
+  document.getElementById("modal-info").style.display = "flex";
+}
+
+function fecharInfo() {
+  document.getElementById("modal-info").style.display = "none";
 }
 
 function renderWing(cols) {
