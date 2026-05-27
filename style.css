@@ -56,8 +56,9 @@ header {
   border-radius: 3px;
   border: 1px solid #ccc;
 }
-.leg-cor.concluido { background: #a5d6a7; border-color: #388e3c; }
-.leg-cor.pendente  { background: #fff; }
+.leg-cor.concluido    { background: #a5d6a7; border-color: #388e3c; }
+.leg-cor.em_pagamento { background: #fff59d; border-color: #f9a825; }
+.leg-cor.pendente     { background: #fff; }
 
 /* ── Mapa ── */
 .mapa {
@@ -146,6 +147,12 @@ header {
 .apt-serv.concluido {
   background: #a5d6a7;
   color: #1b5e20;
+  font-weight: 600;
+}
+
+.apt-serv.em_pagamento {
+  background: #fff59d;
+  color: #f57f17;
   font-weight: 600;
 }
 
