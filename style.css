@@ -115,11 +115,11 @@ header {
   border: 1px solid #bdbdbd;
   border-radius: 3px;
   overflow: hidden;
-  min-width: 29px;
+  min-width: 28px;
 }
 
 .apt-vazio {
-  min-width: 29px;
+  min-width: 28px;
   background: transparent;
 }
 

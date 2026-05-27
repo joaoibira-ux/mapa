@@ -7,7 +7,7 @@ const firebaseConfig = {
   appId: "1:472820177992:web:2e1b98c9f6ac3a823d0c7d"
 };
 
-const VERSAO = "1.4";
+const VERSAO = "1.5";
 document.getElementById("versao-app").textContent = "v" + VERSAO;
 
 firebase.initializeApp(firebaseConfig);
@@ -83,7 +83,7 @@ function renderAptCell(local) {
 function renderWing(cols) {
   const n = cols.length;
   return `
-    <div class="wing" style="grid-template-columns:repeat(${n},minmax(29px,1fr))">
+    <div class="wing" style="grid-template-columns:repeat(${n},minmax(28px,1fr))">
       ${cols.map(c => renderAptCell(c.oddLocal)).join("")}
       ${cols.map(c => renderAptCell(c.evenLocal)).join("")}
     </div>`;
