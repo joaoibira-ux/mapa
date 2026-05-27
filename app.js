@@ -7,7 +7,7 @@ const firebaseConfig = {
   appId: "1:472820177992:web:2e1b98c9f6ac3a823d0c7d"
 };
 
-const VERSAO = "2.7";
+const VERSAO = "2.8";
 document.getElementById("versao-app").textContent = "v" + VERSAO;
 
 firebase.initializeApp(firebaseConfig);
@@ -112,9 +112,9 @@ function verServico(el) {
   }
 
   document.getElementById("info-conteudo").innerHTML = html;
-  requestAnimationFrame(() => {
+  setTimeout(() => {
     document.getElementById("modal-info").style.display = "flex";
-  });
+  }, 350);
 }
 
 function fecharInfo() {
