@@ -7,7 +7,7 @@ const firebaseConfig = {
   appId: "1:472820177992:web:2e1b98c9f6ac3a823d0c7d"
 };
 
-const VERSAO = "3.0";
+const VERSAO = "3.1";
 document.getElementById("versao-app").textContent = "v" + VERSAO;
 
 firebase.initializeApp(firebaseConfig);
@@ -110,26 +110,35 @@ function verServico(el) {
 
   const popup = document.getElementById("popup-det");
   popup.querySelector(".pop-body").innerHTML = html;
-  popup.style.display = "block";
 
   const rect = el.getBoundingClientRect();
-  const pw = 260;
+  const pw = 220;
   let top  = rect.bottom + 6;
   let left = rect.left;
 
   if (left + pw > window.innerWidth - 8) left = window.innerWidth - pw - 8;
   if (left < 8) left = 8;
-  if (top + 200 > window.innerHeight - 8) top = rect.top - 8 - popup.offsetHeight;
 
   popup.style.top  = top  + "px";
   popup.style.left = left + "px";
+  popup.style.display = "block";
 
-  setTimeout(() => document.addEventListener("click", fecharInfo, { once: true }), 0);
+  if (top + popup.offsetHeight > window.innerHeight - 8) {
+    popup.style.top = (rect.top - popup.offsetHeight - 6) + "px";
+  }
 }
 
 function fecharInfo() {
   document.getElementById("popup-det").style.display = "none";
 }
+
+// Fecha ao clicar fora do popup
+document.addEventListener("click", function(e) {
+  const popup = document.getElementById("popup-det");
+  if (popup && popup.style.display !== "none" && !popup.contains(e.target)) {
+    fecharInfo();
+  }
+});
 
 function renderWing(cols) {
   const n = cols.length;
