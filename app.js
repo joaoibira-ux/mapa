@@ -7,7 +7,7 @@ const firebaseConfig = {
   appId: "1:472820177992:web:2e1b98c9f6ac3a823d0c7d"
 };
 
-const VERSAO = "3.2";
+const VERSAO = "3.3";
 document.getElementById("versao-app").textContent = "v" + VERSAO;
 
 firebase.initializeApp(firebaseConfig);
@@ -113,7 +113,7 @@ function verServico(e, el) {
   popup.querySelector(".pop-body").innerHTML = html;
 
   const rect = el.getBoundingClientRect();
-  const pw = 220;
+  const pw = 175;
   let top  = rect.bottom + 6;
   let left = rect.left;
 
