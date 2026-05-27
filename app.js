@@ -7,7 +7,7 @@ const firebaseConfig = {
   appId: "1:472820177992:web:2e1b98c9f6ac3a823d0c7d"
 };
 
-const VERSAO = "3.3";
+const VERSAO = "3.4";
 document.getElementById("versao-app").textContent = "v" + VERSAO;
 
 firebase.initializeApp(firebaseConfig);
@@ -111,22 +111,32 @@ function verServico(e, el) {
 
   const popup = document.getElementById("popup-det");
   popup.querySelector(".pop-body").innerHTML = html;
-
-  const rect = el.getBoundingClientRect();
-  const pw = 175;
-  let top  = rect.bottom + 6;
-  let left = rect.left;
-
-  if (left + pw > window.innerWidth - 8) left = window.innerWidth - pw - 8;
-  if (left < 8) left = 8;
-
-  popup.style.top  = top  + "px";
-  popup.style.left = left + "px";
   popup.style.display = "block";
 
-  if (top + popup.offsetHeight > window.innerHeight - 8) {
-    popup.style.top = (rect.top - popup.offsetHeight - 6) + "px";
+  const rect  = el.getBoundingClientRect();
+  const vv    = window.visualViewport;
+  const scale = vv ? vv.scale      : 1;
+  const offL  = vv ? vv.offsetLeft : 0;
+  const offT  = vv ? vv.offsetTop  : 0;
+  const vvW   = vv ? vv.width      : window.innerWidth;
+  const vvH   = vv ? vv.height     : window.innerHeight;
+
+  const pw  = 175;
+  const gap = 6;
+
+  // getBoundingClientRect usa coords do visual viewport;
+  // position:fixed usa o layout viewport → converter dividindo pelo scale e somando offset
+  let left = offL + rect.left   / scale;
+  let top  = offT + rect.bottom / scale + gap;
+
+  if (left + pw > offL + vvW - gap) left = offL + vvW - pw - gap;
+  if (left < offL + gap)            left = offL + gap;
+  if (top + popup.offsetHeight > offT + vvH - gap) {
+    top = offT + rect.top / scale - popup.offsetHeight - gap;
   }
+
+  popup.style.left = left + "px";
+  popup.style.top  = top  + "px";
 }
 
 function fecharInfo() {
