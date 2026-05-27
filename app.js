@@ -7,7 +7,7 @@ const firebaseConfig = {
   appId: "1:472820177992:web:2e1b98c9f6ac3a823d0c7d"
 };
 
-const VERSAO = "2.8";
+const VERSAO = "2.9";
 document.getElementById("versao-app").textContent = "v" + VERSAO;
 
 firebase.initializeApp(firebaseConfig);
@@ -112,6 +112,17 @@ function verServico(el) {
   }
 
   document.getElementById("info-conteudo").innerHTML = html;
+
+  // Corrige zoom do desktop aplicando escala inversa no sheet
+  const zoom = window.outerWidth / window.innerWidth;
+  const sheet = document.querySelector('.modal-sheet');
+  if (zoom > 1.05) {
+    sheet.style.transform = `scale(${(1 / zoom).toFixed(4)})`;
+    sheet.style.transformOrigin = 'center bottom';
+  } else {
+    sheet.style.transform = '';
+  }
+
   setTimeout(() => {
     document.getElementById("modal-info").style.display = "flex";
   }, 350);
@@ -119,6 +130,7 @@ function verServico(el) {
 
 function fecharInfo() {
   document.getElementById("modal-info").style.display = "none";
+  document.querySelector('.modal-sheet').style.transform = '';
   const metaVP = document.querySelector('meta[name=viewport]');
   metaVP.setAttribute('content', 'width=device-width, initial-scale=1, viewport-fit=cover');
 }
