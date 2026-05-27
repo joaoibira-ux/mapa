@@ -7,7 +7,7 @@ const firebaseConfig = {
   appId: "1:472820177992:web:2e1b98c9f6ac3a823d0c7d"
 };
 
-const VERSAO = "3.6";
+const VERSAO = "3.7";
 document.getElementById("versao-app").textContent = "v" + VERSAO;
 
 firebase.initializeApp(firebaseConfig);
@@ -80,6 +80,7 @@ function renderAptCell(local) {
               data-nome="${escHtml(s.nome)}"
               data-status="${s.status}"
               data-executor="${escHtml((s.executor && s.executor.nome) || '')}"
+              data-funcionario="${escHtml((s.funcionario && s.funcionario.nome) || '')}"
               data-valor="${s.valorPago || ''}"
               data-data="${escHtml(s.dataPagamento || '')}"
               onclick="verServico(event,this)">${nomeAbrev(s.nome)}</div>`
@@ -92,21 +93,26 @@ function verServico(e, el) {
   const apt      = el.dataset.apt;
   const nome     = el.dataset.nome;
   const status   = el.dataset.status;
-  const executor = el.dataset.executor;
-  const valor    = el.dataset.valor;
-  const data     = el.dataset.data;
+  const executor    = el.dataset.executor;
+  const funcionario = el.dataset.funcionario;
+  const valor       = el.dataset.valor;
+  const data        = el.dataset.data;
 
   const fmtValor = v => v ? "R$ " + parseFloat(v).toFixed(2).replace(".", ",").replace(/\B(?=(\d{3})+(?!\d))/g, ".") : "—";
 
+  const statusLabel = { concluido: "Concluído ✓", em_pagamento: "⏳ Na folha", pendente: "Pendente" };
   let html = `
     <div class="pop-linha"><span class="pop-label">Apt</span><span>${escHtml(apt)}</span></div>
     <div class="pop-linha"><span class="pop-label">Serviço</span><span>${escHtml(nome)}</span></div>
-    <div class="pop-linha"><span class="pop-label">Status</span><span class="info-status ${status}">${status === "concluido" ? "Concluído ✓" : "Pendente"}</span></div>`;
+    <div class="pop-linha"><span class="pop-label">Status</span><span class="info-status ${status}">${statusLabel[status] || status}</span></div>`;
   if (status === "concluido") {
     html += `
     <div class="pop-linha"><span class="pop-label">Executor</span><span>${escHtml(executor) || "—"}</span></div>
     <div class="pop-linha"><span class="pop-label">Data</span><span>${escHtml(data) || "—"}</span></div>
     <div class="pop-linha"><span class="pop-label">Valor pago</span><span>${fmtValor(valor)}</span></div>`;
+  } else if (status === "em_pagamento") {
+    html += `
+    <div class="pop-linha"><span class="pop-label">Funcionário</span><span>${escHtml(funcionario) || "—"}</span></div>`;
   }
 
   const popup = document.getElementById("popup-det");
