@@ -7,7 +7,7 @@ const firebaseConfig = {
   appId: "1:472820177992:web:2e1b98c9f6ac3a823d0c7d"
 };
 
-const VERSAO = "2.3";
+const VERSAO = "2.4";
 document.getElementById("versao-app").textContent = "v" + VERSAO;
 
 firebase.initializeApp(firebaseConfig);
@@ -95,6 +95,8 @@ function ajustarModalAoViewport() {
   el.style.left   = vv.offsetLeft + "px";
   el.style.width  = vv.width      + "px";
   el.style.height = vv.height     + "px";
+  el.style.right  = "auto";
+  el.style.bottom = "auto";
 }
 
 function verServico(el) {
