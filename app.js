@@ -7,7 +7,7 @@ const firebaseConfig = {
   appId: "1:472820177992:web:2e1b98c9f6ac3a823d0c7d"
 };
 
-const VERSAO = "2.2";
+const VERSAO = "2.3";
 document.getElementById("versao-app").textContent = "v" + VERSAO;
 
 firebase.initializeApp(firebaseConfig);
@@ -87,6 +87,16 @@ function renderAptCell(local) {
     </div>`;
 }
 
+function ajustarModalAoViewport() {
+  const vv = window.visualViewport;
+  const el = document.getElementById("modal-info");
+  if (!vv || !el) return;
+  el.style.top    = vv.offsetTop  + "px";
+  el.style.left   = vv.offsetLeft + "px";
+  el.style.width  = vv.width      + "px";
+  el.style.height = vv.height     + "px";
+}
+
 function verServico(el) {
   const apt      = el.dataset.apt;
   const nome     = el.dataset.nome;
@@ -109,11 +119,21 @@ function verServico(el) {
   }
 
   document.getElementById("info-conteudo").innerHTML = html;
-  document.getElementById("modal-info").style.display = "flex";
+  const modal = document.getElementById("modal-info");
+  modal.style.display = "flex";
+  ajustarModalAoViewport();
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener("scroll", ajustarModalAoViewport);
+    window.visualViewport.addEventListener("resize", ajustarModalAoViewport);
+  }
 }
 
 function fecharInfo() {
   document.getElementById("modal-info").style.display = "none";
+  if (window.visualViewport) {
+    window.visualViewport.removeEventListener("scroll", ajustarModalAoViewport);
+    window.visualViewport.removeEventListener("resize", ajustarModalAoViewport);
+  }
 }
 
 function renderWing(cols) {
