@@ -9,7 +9,7 @@
   <title>Mapa de Execução</title>
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <link rel="manifest" href="./manifest.json" />
-  <link rel="stylesheet" href="./style.css?v=20" />
+  <link rel="stylesheet" href="./style.css?v=21" />
 </head>
 <body>
 
@@ -26,18 +26,16 @@
 
 <div id="mapa" class="mapa"></div>
 
-<div id="modal-info" class="modal-overlay" style="display:none" onclick="if(event.target===this)fecharInfo()">
-  <div class="modal-sheet">
-    <div class="modal-topo">
-      <strong>Detalhes</strong>
-      <button onclick="fecharInfo()">✕</button>
-    </div>
-    <div id="info-conteudo"></div>
+<div id="popup-det" class="popup-det" style="display:none">
+  <div class="pop-header">
+    <strong>Detalhes</strong>
+    <button onclick="fecharInfo()">✕</button>
   </div>
+  <div class="pop-body"></div>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-<script src="./app.js?v=20"></script>
+<script src="./app.js?v=21"></script>
 </body>
 </html>

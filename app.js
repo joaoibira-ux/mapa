@@ -7,7 +7,7 @@ const firebaseConfig = {
   appId: "1:472820177992:web:2e1b98c9f6ac3a823d0c7d"
 };
 
-const VERSAO = "2.9";
+const VERSAO = "3.0";
 document.getElementById("versao-app").textContent = "v" + VERSAO;
 
 firebase.initializeApp(firebaseConfig);
@@ -88,9 +88,6 @@ function renderAptCell(local) {
 }
 
 function verServico(el) {
-  const metaVP = document.querySelector('meta[name=viewport]');
-  metaVP.setAttribute('content', 'width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover');
-
   const apt      = el.dataset.apt;
   const nome     = el.dataset.nome;
   const status   = el.dataset.status;
@@ -101,38 +98,37 @@ function verServico(el) {
   const fmtValor = v => v ? "R$ " + parseFloat(v).toFixed(2).replace(".", ",").replace(/\B(?=(\d{3})+(?!\d))/g, ".") : "—";
 
   let html = `
-    <div class="info-row"><span class="info-label">Apt</span><span>${escHtml(apt)}</span></div>
-    <div class="info-row"><span class="info-label">Serviço</span><span>${escHtml(nome)}</span></div>
-    <div class="info-row"><span class="info-label">Status</span><span class="info-status ${status}">${status === "concluido" ? "Concluído ✓" : "Pendente"}</span></div>`;
+    <div class="pop-linha"><span class="pop-label">Apt</span><span>${escHtml(apt)}</span></div>
+    <div class="pop-linha"><span class="pop-label">Serviço</span><span>${escHtml(nome)}</span></div>
+    <div class="pop-linha"><span class="pop-label">Status</span><span class="info-status ${status}">${status === "concluido" ? "Concluído ✓" : "Pendente"}</span></div>`;
   if (status === "concluido") {
     html += `
-    <div class="info-row"><span class="info-label">Executor</span><span>${escHtml(executor) || "—"}</span></div>
-    <div class="info-row"><span class="info-label">Data</span><span>${escHtml(data) || "—"}</span></div>
-    <div class="info-row"><span class="info-label">Valor pago</span><span>${fmtValor(valor)}</span></div>`;
+    <div class="pop-linha"><span class="pop-label">Executor</span><span>${escHtml(executor) || "—"}</span></div>
+    <div class="pop-linha"><span class="pop-label">Data</span><span>${escHtml(data) || "—"}</span></div>
+    <div class="pop-linha"><span class="pop-label">Valor pago</span><span>${fmtValor(valor)}</span></div>`;
   }
 
-  document.getElementById("info-conteudo").innerHTML = html;
+  const popup = document.getElementById("popup-det");
+  popup.querySelector(".pop-body").innerHTML = html;
+  popup.style.display = "block";
 
-  // Corrige zoom do desktop aplicando escala inversa no sheet
-  const zoom = window.outerWidth / window.innerWidth;
-  const sheet = document.querySelector('.modal-sheet');
-  if (zoom > 1.05) {
-    sheet.style.transform = `scale(${(1 / zoom).toFixed(4)})`;
-    sheet.style.transformOrigin = 'center bottom';
-  } else {
-    sheet.style.transform = '';
-  }
+  const rect = el.getBoundingClientRect();
+  const pw = 260;
+  let top  = rect.bottom + 6;
+  let left = rect.left;
 
-  setTimeout(() => {
-    document.getElementById("modal-info").style.display = "flex";
-  }, 350);
+  if (left + pw > window.innerWidth - 8) left = window.innerWidth - pw - 8;
+  if (left < 8) left = 8;
+  if (top + 200 > window.innerHeight - 8) top = rect.top - 8 - popup.offsetHeight;
+
+  popup.style.top  = top  + "px";
+  popup.style.left = left + "px";
+
+  setTimeout(() => document.addEventListener("click", fecharInfo, { once: true }), 0);
 }
 
 function fecharInfo() {
-  document.getElementById("modal-info").style.display = "none";
-  document.querySelector('.modal-sheet').style.transform = '';
-  const metaVP = document.querySelector('meta[name=viewport]');
-  metaVP.setAttribute('content', 'width=device-width, initial-scale=1, viewport-fit=cover');
+  document.getElementById("popup-det").style.display = "none";
 }
 
 function renderWing(cols) {

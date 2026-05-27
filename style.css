@@ -156,56 +156,52 @@ header {
   font-size: 0.9rem;
 }
 
-/* ── Modal de detalhes ── */
-.modal-overlay {
+/* ── Popup de detalhes ── */
+.popup-det {
   position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.45);
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  z-index: 100;
-}
-
-.modal-sheet {
   background: white;
-  border-radius: 16px 16px 0 0;
-  padding: 20px 16px calc(20px + env(safe-area-inset-bottom));
-  width: 100%;
-  max-width: 480px;
+  border-radius: 10px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.22);
+  padding: 12px 14px;
+  width: 260px;
+  z-index: 100;
+  border: 1px solid #e0e0e0;
 }
 
-.modal-topo {
+.pop-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
-  font-size: 1rem;
+  margin-bottom: 10px;
+  font-size: 0.9rem;
   font-weight: 700;
   color: #1a3322;
 }
 
-.modal-topo button {
+.pop-header button {
   background: none;
   border: none;
-  font-size: 1.1rem;
+  font-size: 1rem;
   cursor: pointer;
-  color: #666;
-  padding: 4px 8px;
+  color: #888;
+  padding: 0 4px;
 }
 
-.info-row {
+.pop-linha {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 0;
+  padding: 6px 0;
   border-bottom: 1px solid #f0f0f0;
-  font-size: 0.9rem;
+  font-size: 0.82rem;
+  gap: 8px;
 }
 
-.info-label {
-  color: #888;
-  font-weight: 500;
+.pop-linha:last-child { border-bottom: none; }
+
+.pop-label {
+  color: #999;
+  flex-shrink: 0;
 }
 
 .info-status.concluido {
@@ -214,5 +210,5 @@ header {
 }
 
 .info-status.pendente {
-  color: #999;
+  color: #aaa;
 }
