@@ -7,7 +7,7 @@ const firebaseConfig = {
   appId: "1:472820177992:web:2e1b98c9f6ac3a823d0c7d"
 };
 
-const VERSAO = "3.1";
+const VERSAO = "3.2";
 document.getElementById("versao-app").textContent = "v" + VERSAO;
 
 firebase.initializeApp(firebaseConfig);
@@ -82,12 +82,13 @@ function renderAptCell(local) {
               data-executor="${escHtml((s.executor && s.executor.nome) || '')}"
               data-valor="${s.valorPago || ''}"
               data-data="${escHtml(s.dataPagamento || '')}"
-              onclick="verServico(this)">${nomeAbrev(s.nome)}</div>`
+              onclick="verServico(event,this)">${nomeAbrev(s.nome)}</div>`
       ).join("")}
     </div>`;
 }
 
-function verServico(el) {
+function verServico(e, el) {
+  e.stopPropagation();
   const apt      = el.dataset.apt;
   const nome     = el.dataset.nome;
   const status   = el.dataset.status;
