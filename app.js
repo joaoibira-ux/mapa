@@ -7,7 +7,7 @@ const firebaseConfig = {
   appId: "1:472820177992:web:2e1b98c9f6ac3a823d0c7d"
 };
 
-const VERSAO = "2.5";
+const VERSAO = "2.6";
 document.getElementById("versao-app").textContent = "v" + VERSAO;
 
 firebase.initializeApp(firebaseConfig);
@@ -100,6 +100,9 @@ function ajustarModalAoViewport() {
 }
 
 function verServico(el) {
+  const metaVP = document.querySelector('meta[name=viewport]');
+  metaVP.setAttribute('content', 'width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover');
+
   const apt      = el.dataset.apt;
   const nome     = el.dataset.nome;
   const status   = el.dataset.status;
@@ -138,6 +141,8 @@ function fecharInfo() {
     window.visualViewport.removeEventListener("resize", ajustarModalAoViewport);
   }
   window.removeEventListener("resize", ajustarModalAoViewport);
+  const metaVP = document.querySelector('meta[name=viewport]');
+  metaVP.setAttribute('content', 'width=device-width, initial-scale=1, viewport-fit=cover');
 }
 
 function renderWing(cols) {
