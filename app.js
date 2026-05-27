@@ -7,7 +7,7 @@ const firebaseConfig = {
   appId: "1:472820177992:web:2e1b98c9f6ac3a823d0c7d"
 };
 
-const VERSAO = "2.4";
+const VERSAO = "2.5";
 document.getElementById("versao-app").textContent = "v" + VERSAO;
 
 firebase.initializeApp(firebaseConfig);
@@ -128,6 +128,7 @@ function verServico(el) {
     window.visualViewport.addEventListener("scroll", ajustarModalAoViewport);
     window.visualViewport.addEventListener("resize", ajustarModalAoViewport);
   }
+  window.addEventListener("resize", ajustarModalAoViewport);
 }
 
 function fecharInfo() {
@@ -136,6 +137,7 @@ function fecharInfo() {
     window.visualViewport.removeEventListener("scroll", ajustarModalAoViewport);
     window.visualViewport.removeEventListener("resize", ajustarModalAoViewport);
   }
+  window.removeEventListener("resize", ajustarModalAoViewport);
 }
 
 function renderWing(cols) {
