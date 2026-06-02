@@ -7,7 +7,7 @@ const firebaseConfig = {
   appId: "1:472820177992:web:2e1b98c9f6ac3a823d0c7d"
 };
 
-const VERSAO = "3.7";
+const VERSAO = "3.8";
 document.getElementById("versao-app").textContent = "v" + VERSAO;
 
 firebase.initializeApp(firebaseConfig);
@@ -83,6 +83,7 @@ function renderAptCell(local) {
               data-funcionario="${escHtml((s.funcionario && s.funcionario.nome) || '')}"
               data-valor="${s.valorPago || ''}"
               data-data="${escHtml(s.dataPagamento || '')}"
+              data-dataregistro="${escHtml(s.dataRegistro || '')}"
               onclick="verServico(event,this)">${nomeAbrev(s.nome)}</div>`
       ).join("")}
     </div>`;
@@ -93,10 +94,11 @@ function verServico(e, el) {
   const apt      = el.dataset.apt;
   const nome     = el.dataset.nome;
   const status   = el.dataset.status;
-  const executor    = el.dataset.executor;
-  const funcionario = el.dataset.funcionario;
-  const valor       = el.dataset.valor;
-  const data        = el.dataset.data;
+  const executor      = el.dataset.executor;
+  const funcionario   = el.dataset.funcionario;
+  const valor         = el.dataset.valor;
+  const data          = el.dataset.data;
+  const dataRegistro  = el.dataset.dataregistro;
 
   const fmtValor = v => v ? "R$ " + parseFloat(v).toFixed(2).replace(".", ",").replace(/\B(?=(\d{3})+(?!\d))/g, ".") : "—";
 
@@ -112,7 +114,8 @@ function verServico(e, el) {
     <div class="pop-linha"><span class="pop-label">Valor pago</span><span>${fmtValor(valor)}</span></div>`;
   } else if (status === "em_pagamento") {
     html += `
-    <div class="pop-linha"><span class="pop-label">Funcionário</span><span>${escHtml(funcionario) || "—"}</span></div>`;
+    <div class="pop-linha"><span class="pop-label">Funcionário</span><span>${escHtml(funcionario) || "—"}</span></div>
+    <div class="pop-linha"><span class="pop-label">Registro</span><span>${escHtml(dataRegistro) || "—"}</span></div>`;
   }
 
   const popup = document.getElementById("popup-det");
