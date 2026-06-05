@@ -1,9 +1,10 @@
-const VERSION = "mapa-v29";
+const VERSION = "mapa-v30";
 const ASSETS = [
   "./index.html",
   "./style.css?v=28",
-  "./app.js?v=29",
-  "./manifest.json"
+  "./app.js?v=30",
+  "./manifest.json",
+  "./Logo-gw.png"
 ];
 
 self.addEventListener("install", e => {
