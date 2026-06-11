@@ -7,7 +7,7 @@ const firebaseConfig = {
   appId: "1:472820177992:web:2e1b98c9f6ac3a823d0c7d"
 };
 
-const VERSAO = "3.10";
+const VERSAO = "3.11";
 document.getElementById("versao-app").textContent = "v" + VERSAO;
 
 firebase.initializeApp(firebaseConfig);
@@ -33,6 +33,13 @@ function nomeAbrev(nome) {
   if (n.includes("emassamento") || n.includes("massa")) return "Massa";
   if (n.includes("textura"))    return "Textura";
   return (nome || "").substring(0, 10);
+}
+
+// Mescla um item de serviço do local com o nome configurado para o Mapa
+// (campo "Nome no Mapa" cadastrado no app Serviços)
+function servicoComNomeMapa(s) {
+  const disp = servicosCache[s.id];
+  return disp && disp.nomeMapa ? { ...s, nomeMapa: disp.nomeMapa } : s;
 }
 
 function parseId(id) {
@@ -70,7 +77,7 @@ function buildCols(wing) {
 function renderAptCell(local) {
   if (!local) return `<div class="apt-vazio"></div>`;
   const numPart = local.identificacao.replace(/^[A-Z]+/, "");
-  const servs   = [...(local.servicos || [])].sort((a, b) => ordemServico(a.nome) - ordemServico(b.nome));
+  const servs   = [...(local.servicos || [])].map(servicoComNomeMapa).sort((a, b) => ordemServico(a.nome) - ordemServico(b.nome));
   return `
     <div class="apt-cell">
       <div class="apt-header">Apt: ${escHtml(numPart)}</div>
@@ -84,7 +91,7 @@ function renderAptCell(local) {
               data-valor="${s.valorPago || ''}"
               data-data="${escHtml(s.dataPagamento || '')}"
               data-dataregistro="${escHtml(s.dataRegistro || '')}"
-              onclick="verServico(event,this)">${nomeAbrev(s.nome)}</div>`
+              onclick="verServico(event,this)">${s.nomeMapa ? escHtml(s.nomeMapa) : nomeAbrev(s.nome)}</div>`
       ).join("")}
     </div>`;
 }
@@ -194,12 +201,26 @@ function render(data) {
   }).join("");
 }
 
+let locaisData   = [];
+let servicosCache = {};
+
+function renderAtual() {
+  render(locaisData);
+}
+
 db.collection("locais").orderBy("identificacao", "asc").onSnapshot(snap => {
-  render(snap.docs.map(d => ({ id: d.id, ...d.data() })));
+  locaisData = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  renderAtual();
 }, err => {
   console.error(err);
   document.getElementById("mapa").innerHTML =
     '<p class="empty">Erro ao conectar.</p>';
+});
+
+db.collection("servicos").onSnapshot(snap => {
+  servicosCache = {};
+  snap.forEach(d => { servicosCache[d.id] = d.data(); });
+  renderAtual();
 });
 
 if ("serviceWorker" in navigator) {
